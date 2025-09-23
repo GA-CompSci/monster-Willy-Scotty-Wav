@@ -24,7 +24,7 @@ public class Monster {
 
     // accessor methods
     public int health () { return this.health;}
-    public double dammage() {return this.damage;}
+    public double damage() {return Math.round(damage * 100.0) / 100.0;}
     public int speed () {return this.speed;}
     public String special() {return this.special;}
 
