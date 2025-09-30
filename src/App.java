@@ -3,6 +3,12 @@ import java.util.Scanner;
 public class App {
     // calss variable
     private static Monster[] monsters;
+    //player stats
+    private static int health = 100;
+    private static int speed = 10;
+    private static int shield = 50;
+    private static int damage = 50;
+    private static int heal = 50;
 
     public static void main(String[] args) throws Exception {
         System.out.println("*MONSTER BATTLE*");
@@ -16,7 +22,26 @@ public class App {
             monsters[i] = new Monster(); // todo add specials
         }
 
-        System.out.println(monsterCount(50) + " monsters have more thatn 50 health");
+        // build picking
+        System.out.println("*CHOOSE YOUR CHARITER*");
+        System.out.println("*1) FIGHTER*");
+        System.out.println("*2) TANK*");
+        System.out.println("*3) HEALER*");
+        System.out.println("*4) ASSASIN*");
+        System.out.println("*CHOICE:");
+        int choice = input.nextInt(); //todo error handle on non int input
+
+        //classes
+        if(choice == 1){
+
+
+        }else if (choice == 2){
+
+        }else if (choice == 3){
+
+        }else {
+
+        }
 
         // what is the % of defeated monsters?
         double result = percentComplete();
@@ -25,9 +50,45 @@ public class App {
 
         // display monster status
         reportMonsters();
+
+        // pick monster
+        Monster currentMonster = getNextMonster();
+
+        //game loop
+    while(monsterCount(0) > 0){
+        //who goes first
+
+        //give options
+        System.out.println("*OPTIONS*");
+        System.out.println("*1) ATTACK*");
+        System.out.println("*2) DEFEND*");
+        System.out.println("*3) HEAL*");
+        System.out.println("*4) REST*");
+        System.out.println("*CHOICE:");
+        int choice = input.nextInt(); //todo error handle on non int input
+
+        //actions
+        if(choice == 1){
+
+        }else if (choice == 2){
+
+        }else if (choice == 3){
+
+        }else {
+
+        }
+
+        //do i need a new monster
+        if(currentMonster.health() <= 0)
+        System.out.println("\n*YOU HAVE SLAIN A MONSTER*\n");
+        currentMonster = getNextMonster();
+        reportMonsters();
+
+
     }
 
     public static void reportMonsters(){
+        System.out.println("\n *MONSTER REPORT*");
         int i = 0;
         for(Monster m : monsters){
             System.out.print("[" + i + "]");

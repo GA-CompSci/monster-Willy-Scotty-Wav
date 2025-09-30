@@ -28,4 +28,9 @@ public class Monster {
     public int speed () {return this.speed;}
     public String special() {return this.special;}
 
+    //mutator methods
+    public void takeDamage(){
+        
+    }
+
 }
