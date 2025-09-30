@@ -65,7 +65,7 @@ public class App {
         System.out.println("*3) HEAL*");
         System.out.println("*4) REST*");
         System.out.println("*CHOICE:");
-        int choice = input.nextInt(); //todo error handle on non int input
+        choice = input.nextInt(); //todo error handle on non int input
 
         //actions
         if(choice == 1){
