@@ -29,7 +29,8 @@ public class Monster {
     public String special() {return this.special;}
 
     //mutator methods
-    public void takeDamage(){
+    public void takeDamage(int dmg){
+        health -= dmg;
         
     }
     

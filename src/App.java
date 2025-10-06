@@ -3,12 +3,14 @@ import java.util.Scanner;
 public class App {
     // calss variable
     private static Monster[] monsters;
-    //player stats
+    //player stats - starts at max
     private static int health = 100;
     private static int speed = 10;
     private static int shield = 50;
     private static int damage = 50;
     private static int heal = 50;
+    // player state vars
+    private static boolean isDefending = false;
 
     public static void main(String[] args) throws Exception {
         System.out.println("*MONSTER BATTLE*");
@@ -24,22 +26,29 @@ public class App {
 
         // build picking
         System.out.println("*CHOOSE YOUR CHARITER*");
-        System.out.println("*1) FIGHTER*");
-        System.out.println("*2) TANK*");
-        System.out.println("*3) HEALER*");
-        System.out.println("*4) ASSASIN*");
-        System.out.println("*CHOICE:");
+        System.out.println("1) FIGHTER");
+        System.out.println("2) TANK");
+        System.out.println("3) HEALER");
+        System.out.println("4) ASSASIN");
+        System.out.println("CHOICE:");
         int choice = input.nextInt(); //todo error handle on non int input
 
         //classes
         if(choice == 1){
-
+            shield -= (int)(Math.random() * 45 + 1) + 5;
+            heal -= (int)(Math.random() * 46) + 5;
 
         }else if (choice == 2){
+            speed -= (int)(Math.random() * 9) + 1;
+            heal -= (int)(Math.random() * 46) + 5;
 
         }else if (choice == 3){
+            damage -= (int)(Math.random() * 26) + 5;
+            shield -= (int)(Math.random() * 46) + 5;
 
         }else {
+            shield -= (int)(Math.random() * 46) + 5;
+            heal -= (int)(Math.random() * 21) + 5;
 
         }
 
@@ -56,6 +65,8 @@ public class App {
 
         //game loop
     while(monsterCount(0) > 0){
+        //reset shield
+        isDefending = false;
         //who goes first
 
         //give options
@@ -69,12 +80,28 @@ public class App {
 
         //actions
         if(choice == 1){
+            int dmg = (int)(Math.random() * damage + 1);
+            if (dmg == damage) dmg = currentMonster.health();// instaill
+            else if(dmg == 0){
+                System.out.println("*CRITICAL FAIL*");
+                System.out.println("[damage taken to self (- 10 health)]");
+                health -= 10;
+            }
+            else
+                currentMonster.takeDamage(dmg);
 
         }else if (choice == 2){
+            isDefending = true;
+            System.out.println("-SHIELD UP-");
 
         }else if (choice == 3){
+            int h = (int)(Math.random() + heal +  1);
+            health += h;
+            System.out.println("[You Healed For " + h + "Points. Current Health: " + health + "]");
 
         }else {
+            speed++;
+            System.out.println("[Your Speed Has Increased. Current Speed: " + speed + "]");
 
         }
 
@@ -83,11 +110,39 @@ public class App {
         System.out.println("\n*YOU HAVE SLAIN A MONSTER*\n");
         currentMonster = getNextMonster();
         reportMonsters();
+        continue; //retart loop
 
 
     }
 
+    //monsters turn
+    int speedCheck = (int)(Math.random() * 100);
+    if(speedCheck <= speed){
+        System.out.println("*BOUNUS TURN*");
+        continue;
+    }
+    else {
+        int incomingDamage = (int)(Math.random() * currentMonster.damage() +1);
+        if(isDefending){
+             incomingDamage -= shield;
+             if(incomingDamage < 0) incomingDamage = 0;
+             System.out.println("[Your Shield Blocked " + shield + "Damage");
+        }
+        health -= incomingDamage;
+    }
+    if (health <= 0 ) {
+        reportMonsters();
+        System.out.println("*GAME OVER*");
+       
+    }
+
     public static void reportMonsters(){
+        System.out.println("\n *PLAYER REPORT*");
+        System.out.println("HEALTH: " + health );
+        System.out.println("ATTACK POWER: " + damage );
+        System.out.println("SPEED: " + speed );
+        System.out.println("HEAL: " + heal );
+
         System.out.println("\n *MONSTER REPORT*");
         int i = 0;
         for(Monster m : monsters){
