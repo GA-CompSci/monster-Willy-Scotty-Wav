@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class App {
     // calss variable
     private static Monster[] monsters;
-    //player stats - starts at max
+    // player stats - starts at max
     private static int health = 100;
     private static int speed = 10;
     private static int shield = 50;
@@ -31,24 +31,24 @@ public class App {
         System.out.println("3) HEALER");
         System.out.println("4) ASSASIN");
         System.out.println("CHOICE:");
-        int choice = input.nextInt(); //todo error handle on non int input
+        int choice = input.nextInt(); // todo error handle on non int input
 
-        //classes
-        if(choice == 1){
-            shield -= (int)(Math.random() * 45 + 1) + 5;
-            heal -= (int)(Math.random() * 46) + 5;
+        // classes
+        if (choice == 1) {
+            shield -= (int) (Math.random() * 45 + 1) + 5;
+            heal -= (int) (Math.random() * 46) + 5;
 
-        }else if (choice == 2){
-            speed -= (int)(Math.random() * 9) + 1;
-            heal -= (int)(Math.random() * 46) + 5;
+        } else if (choice == 2) {
+            speed -= (int) (Math.random() * 9) + 1;
+            heal -= (int) (Math.random() * 46) + 5;
 
-        }else if (choice == 3){
-            damage -= (int)(Math.random() * 26) + 5;
-            shield -= (int)(Math.random() * 46) + 5;
+        } else if (choice == 3) {
+            damage -= (int) (Math.random() * 26) + 5;
+            shield -= (int) (Math.random() * 46) + 5;
 
-        }else {
-            shield -= (int)(Math.random() * 46) + 5;
-            heal -= (int)(Math.random() * 21) + 5;
+        } else {
+            shield -= (int) (Math.random() * 46) + 5;
+            heal -= (int) (Math.random() * 21) + 5;
 
         }
 
@@ -63,94 +63,94 @@ public class App {
         // pick monster
         Monster currentMonster = getNextMonster();
 
-        //game loop
-    while(monsterCount(0) > 0){
-        //reset shield
-        isDefending = false;
-        //who goes first
+        // game loop
+        while (monsterCount(0) > 0) {
+            // reset shield
+            isDefending = false;
+            // who goes first
 
-        //give options
-        System.out.println("*OPTIONS*");
-        System.out.println("*1) ATTACK*");
-        System.out.println("*2) DEFEND*");
-        System.out.println("*3) HEAL*");
-        System.out.println("*4) REST*");
-        System.out.println("*CHOICE:");
-        choice = input.nextInt(); //todo error handle on non int input
+            // give options
+            System.out.println("*OPTIONS*");
+            System.out.println("*1) ATTACK*");
+            System.out.println("*2) DEFEND*");
+            System.out.println("*3) HEAL*");
+            System.out.println("*4) REST*");
+            System.out.println("*CHOICE:");
+            choice = input.nextInt(); // todo error handle on non int input
 
-        //actions
-        if(choice == 1){
-            int dmg = (int)(Math.random() * damage + 1);
-            if (dmg == damage) dmg = currentMonster.health();// instaill
-            else if(dmg == 0){
-                System.out.println("*CRITICAL FAIL*");
-                System.out.println("[damage taken to self (- 10 health)]");
-                health -= 10;
+            // actions
+            if (choice == 1) {
+                int dmg = (int) (Math.random() * damage + 1);
+                if (dmg == damage)
+                    dmg = currentMonster.health();// instaill
+                else if (dmg == 0) {
+                    System.out.println("*CRITICAL FAIL*");
+                    System.out.println("[damage taken to self (- 10 health)]");
+                    health -= 10;
+                } else
+                    currentMonster.takeDamage(dmg);
+
+            } else if (choice == 2) {
+                isDefending = true;
+                System.out.println("-SHIELD UP-");
+
+            } else if (choice == 3) {
+                int h = (int) (Math.random() + heal + 1);
+                health += h;
+                System.out.println("[You Healed For " + h + "Points. Current Health: " + health + "]");
+
+            } else {
+                speed++;
+                System.out.println("[Your Speed Has Increased. Current Speed: " + speed + "]");
+
             }
-            else
-                currentMonster.takeDamage(dmg);
 
-        }else if (choice == 2){
-            isDefending = true;
-            System.out.println("-SHIELD UP-");
+            // do i need a new monster
+            if (currentMonster.health() <= 0) {
+                System.out.println("\n*YOU HAVE SLAIN A MONSTER*\n");
+                currentMonster = getNextMonster();
+                reportMonsters();
+                continue; // retart loop
+            }
 
-        }else if (choice == 3){
-            int h = (int)(Math.random() + heal +  1);
-            health += h;
-            System.out.println("[You Healed For " + h + "Points. Current Health: " + health + "]");
+            // monsters turn
+            int speedCheck = (int) (Math.random() * 100);
+            if (speedCheck <= speed) {
+                System.out.println("*BOUNUS TURN*");
+                continue;
+            } else {
+                int incomingDamage = (int) (Math.random() * currentMonster.damage() + 1);
+                if (isDefending) {
+                    incomingDamage -= shield;
+                    if (incomingDamage < 0)
+                        incomingDamage = 0;
+                    System.out.println("[Your Shield Blocked " + shield + "Damage");
+                }
+                health -= incomingDamage;
+            }
 
-        }else {
-            speed++;
-            System.out.println("[Your Speed Has Increased. Current Speed: " + speed + "]");
-
+            if (health <= 0) {
+                reportMonsters();
+                System.out.println("*GAME OVER*");
+            }
         }
-
-        //do i need a new monster
-        if(currentMonster.health() <= 0)
-        System.out.println("\n*YOU HAVE SLAIN A MONSTER*\n");
-        currentMonster = getNextMonster();
-        reportMonsters();
-        continue; //retart loop
-
-
     }
 
-    //monsters turn
-    int speedCheck = (int)(Math.random() * 100);
-    if(speedCheck <= speed){
-        System.out.println("*BOUNUS TURN*");
-        continue;
-    }
-    else {
-        int incomingDamage = (int)(Math.random() * currentMonster.damage() +1);
-        if(isDefending){
-             incomingDamage -= shield;
-             if(incomingDamage < 0) incomingDamage = 0;
-             System.out.println("[Your Shield Blocked " + shield + "Damage");
-        }
-        health -= incomingDamage;
-    }
-    if (health <= 0 ) {
-        reportMonsters();
-        System.out.println("*GAME OVER*");
-       
-    }
-
-    public static void reportMonsters(){
+    public static void reportMonsters() {
         System.out.println("\n *PLAYER REPORT*");
-        System.out.println("HEALTH: " + health );
-        System.out.println("ATTACK POWER: " + damage );
-        System.out.println("SPEED: " + speed );
-        System.out.println("HEAL: " + heal );
+        System.out.println("HEALTH: " + health);
+        System.out.println("ATTACK POWER: " + damage);
+        System.out.println("SPEED: " + speed);
+        System.out.println("HEAL: " + heal);
 
         System.out.println("\n *MONSTER REPORT*");
         int i = 0;
-        for(Monster m : monsters){
+        for (Monster m : monsters) {
             System.out.print("[" + i + "]");
             System.out.print("- Health: " + m.health());
             System.out.print("- Dmg: " + m.damage());
             System.out.print("- Speed: " + m.speed());
-            if(!m. special().equals(""))
+            if (!m.special().equals(""))
                 System.out.print("- Special: " + m.special());
 
             i++;
