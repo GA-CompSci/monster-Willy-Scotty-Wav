@@ -95,9 +95,9 @@ public class App {
                 System.out.println("-SHIELD UP-");
 
             } else if (choice == 3) {
-                int h = (int) (Math.random() + heal + 1);
+                int h = (int) (Math.random() * heal + 1);
                 health += h;
-                System.out.println("[You Healed For " + h + "Points. Current Health: " + health + "]");
+                System.out.println("[You Healed For " + h + " Points. Current Health: " + health + "]");
 
             } else {
                 speed++;
@@ -124,7 +124,7 @@ public class App {
                     incomingDamage -= shield;
                     if (incomingDamage < 0)
                         incomingDamage = 0;
-                    System.out.println("[Your Shield Blocked " + shield + "Damage");
+                    System.out.println("[Your Shield Blocked " + shield + "  Damage");
                 }
                 health -= incomingDamage;
             }
@@ -156,10 +156,25 @@ public class App {
             i++;
             System.out.println();
         }
+        //health bars
+        int starCount= Math.max(0, (health / 5));
+        String stars = "*".repeat(starCount);
+        String dashes = "-".repeat(20 - starCount);
+        System.out.println("["+ stars + dashes + "] - Player Health");
+        System.out.println("[");
+        for(int k = 0; i< monsters.length;i++)
+        if(monsters[i].health() > 0){
+            System.out.println("*");
+        }
+        else{
+            System.out.println("-");
+        }
+        System.out.println("] - Monsters Left");
+
     }
 
     public static double percentComplete() {
-        return 100 - monsterCount(0) / monsters.length * 100;
+        return (double) (100.0 - monsterCount(0) / monsters.length * 100.0);
 
     }
 
@@ -187,6 +202,19 @@ public class App {
                 return monsters[i];
         }
         return null;
+    }
+    /** returns monster from array with lowest helth
+     * returns null if no monster have over 0 health*/ 
+
+    public static Monster getWeakestMonster(){
+        Monster weakestMonster= getNextMonster();
+        if(weakestMonster == null) return null;
+        for (int i = 0; i < monsters.length; i++) {
+            if (monsters[i].health() > 0 && monsters[i].health() < weakestMonster.health()){
+                weakestMonster = monsters[i];
+            }
+        }
+        return weakestMonster;
     }
 
 }
