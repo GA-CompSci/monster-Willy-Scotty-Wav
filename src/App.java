@@ -98,6 +98,7 @@ public class App {
             } else if (choice == 3) {
                 int h = (int) (Math.random() * heal + 1);
                 health += h;
+                if (health > 100) health = 100;
                 System.out.println("[You Healed For " + h + " Points. Current Health: " + health + "]");
 
             } else {
