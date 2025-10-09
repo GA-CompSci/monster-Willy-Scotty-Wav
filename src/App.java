@@ -70,12 +70,12 @@ public class App {
             // who goes first
 
             // give options
-            System.out.println("*OPTIONS*");
-            System.out.println("*1) ATTACK*");
-            System.out.println("*2) DEFEND*");
-            System.out.println("*3) HEAL*");
-            System.out.println("*4) REST*");
-            System.out.println("*CHOICE:");
+            System.out.println("OPTIONS");
+            System.out.println("1) ATTACK");
+            System.out.println("2) DEFEND");
+            System.out.println("3) HEAL");
+            System.out.println("4) REST");
+            System.out.println("CHOICE:");
             choice = input.nextInt(); // todo error handle on non int input
 
             // actions
@@ -89,6 +89,7 @@ public class App {
                     health -= 10;
                 } else
                     currentMonster.takeDamage(dmg);
+                    System.out.println("*THE MONSTER TOOK: " + dmg + " DAMAGE* [Current Monster Health: " + currentMonster.health() + "]");
 
             } else if (choice == 2) {
                 isDefending = true;
@@ -127,6 +128,7 @@ public class App {
                     System.out.println("[Your Shield Blocked " + shield + "  Damage");
                 }
                 health -= incomingDamage;
+                System.out.println("*YOU TOOK: " + incomingDamage + " DAMAGE* [current health]:" + health);
             }
 
             if (health <= 0) {
@@ -156,20 +158,19 @@ public class App {
             i++;
             System.out.println();
         }
-        //health bars
-        int starCount= Math.max(0, (health / 5));
+        // health bars
+        int starCount = Math.max(0, (health / 5));
         String stars = "*".repeat(starCount);
         String dashes = "-".repeat(20 - starCount);
-        System.out.println("["+ stars + dashes + "] - Player Health");
-        System.out.println("[");
-        for(int k = 0; i< monsters.length;i++)
-        if(monsters[i].health() > 0){
-            System.out.println("*");
-        }
-        else{
-            System.out.println("-");
-        }
-        System.out.println("] - Monsters Left");
+        System.out.println("[" + stars + dashes + "] - Player Health");
+        System.out.print("[");
+        for (int k = 0; k < monsters.length; k++)
+            if (monsters[k].health() > 0) {
+                System.out.print("*");
+            } else {
+                System.out.print("-");
+            }
+        System.out.println("] - Monsters left");
 
     }
 
@@ -203,14 +204,18 @@ public class App {
         }
         return null;
     }
-    /** returns monster from array with lowest helth
-     * returns null if no monster have over 0 health*/ 
 
-    public static Monster getWeakestMonster(){
-        Monster weakestMonster= getNextMonster();
-        if(weakestMonster == null) return null;
+    /**
+     * returns monster from array with lowest helth
+     * returns null if no monster have over 0 health
+     */
+
+    public static Monster getWeakestMonster() {
+        Monster weakestMonster = getNextMonster();
+        if (weakestMonster == null)
+            return null;
         for (int i = 0; i < monsters.length; i++) {
-            if (monsters[i].health() > 0 && monsters[i].health() < weakestMonster.health()){
+            if (monsters[i].health() > 0 && monsters[i].health() < weakestMonster.health()) {
                 weakestMonster = monsters[i];
             }
         }
