@@ -121,21 +121,51 @@ public class NumSet {
     // TODO: shuffle array
     public static void shuffle(int[] arr){
         //traversal with 4 loop
-        for(int i = 0; i < arr.length; ){
-            
-        }
-            //pick random indes locatio 0 -> arr.lenght
+        for(int i = 0; i < arr.length; i++){
+           //pick random indes locatio 0 -> arr.lenght
+           int r = (int)(Math.random() * arr.length);
             //THREE PART SWAP:
-            //copy arr[random] to a temp
+             //copy arr[random] to a temp
+            int temp = arr[r];  
             //move arr[i] to arr[random]
-            //move temp to arr[i]
+            arr[r] = arr[i];
+            //move temp to arr[i] 
+            arr[i] = temp;
+        }
     }
     
     // TODO: shuffle ArrayList
-    
+    public static void shuffle(ArrayList <Integer> aList) {
+        for(int i = 0; i < aList.size(); i++)){
+            int r = (int)(Math.random() * aList.size());
+            //three part swap
+            int temp = aList.get(r);
+            aList.set(r, aList.get(i));
+            aList.set(i, temp);
+        }
+    }
     
     // TODO: divByTwo (overloaded)
+    public static void divByTwo(int[] arr){
+        for(int i = 0; i < arr.length; i++) arr[i] /= 2;
+    }
+    
+
+    public static void divByTwo(ArrayList<Integer> aList){
+        for(int i = 0; i < aList.size(); i++) aList.set(i, aList.get(i)/2);
+    }
     
     
     // TODO: sumArray (overloaded)
+    public static int sumArray(int[] arr){
+        int sum = 0;
+        for(int num:arr) sum += num;
+        return sum;
+    }
+
+    public static int sumArray(ArrayList<Integer> aList){
+        int sum = 0;
+        for(int num:aList) sum += num;
+        return sum;
+    }
 }
